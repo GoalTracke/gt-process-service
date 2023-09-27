@@ -1,6 +1,7 @@
 package com.goaltracke.gtprocessservice.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,12 @@ public class GoalServiceImpl implements GoalService {
 	}
 
 	@Override
-	public List<Goal> getGoals() {
-		return goalRepository.findAll();
+	public List<GoalDto> getGoals() {
+		List<Goal> goals = goalRepository.findAll();
+
+		List<GoalDto> goalDtos = goals.stream().map(goal -> GoalDto.fromEntity(goal)).collect(Collectors.toList());
+
+		return goalDtos;
 	}
 
 	@Override
