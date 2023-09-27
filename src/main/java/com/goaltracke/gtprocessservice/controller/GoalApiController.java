@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goaltracke.gtprocessservice.dto.GoalDto;
-import com.goaltracke.gtprocessservice.entity.Goal;
 import com.goaltracke.gtprocessservice.service.GoalService;
 
 @RestController
@@ -23,7 +22,7 @@ public class GoalApiController {
 	}
 
 	@GetMapping()
-	public List<Goal> getGoals() {
+	public List<GoalDto> getGoals() {
 		return goalService.getGoals();
 	}
 
