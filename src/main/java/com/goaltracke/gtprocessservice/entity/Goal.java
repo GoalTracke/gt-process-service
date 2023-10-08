@@ -1,17 +1,18 @@
 package com.goaltracke.gtprocessservice.entity;
 
-import java.util.Date;
-
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Date;
+import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Table(name = "goal")
 public class Goal {
 
@@ -38,59 +39,16 @@ public class Goal {
 	@CreationTimestamp
 	private Date createdAt;
 
-	public String getId() {
-		return id;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+		Goal goal = (Goal) o;
+		return getId() != null && Objects.equals(getId(), goal.getId());
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getProgressRange() {
-		return progressRange;
-	}
-
-	public void setProgressRange(String progressRange) {
-		this.progressRange = progressRange;
-	}
-
-	public String getUpdateType() {
-		return updateType;
-	}
-
-	public void setUpdateType(String updateType) {
-		this.updateType = updateType;
-	}
-
-	public String getCurrentStatus() {
-		return currentStatus;
-	}
-
-	public void setCurrentStatus(String currentStatus) {
-		this.currentStatus = currentStatus;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
 	}
 }

@@ -4,7 +4,15 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.goaltracke.gtprocessservice.entity.Goal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GoalDto {
 
 	private String id;
@@ -37,71 +45,13 @@ public class GoalDto {
 	}
 
 	public static GoalDto fromEntity(Goal entity) {
-		GoalDto dto = new GoalDto();
-		dto.setUserId(entity.getUserId());
-		dto.setName(entity.getName());
-		dto.setId(entity.getId());
-		dto.setCreatedAt(entity.getCreatedAt());
-		dto.setCurrentStatus(entity.getCurrentStatus());
-		dto.setProgressRange(entity.getProgressRange());
-		dto.setUpdateType(entity.getUpdateType());
-		return dto;
+		return GoalDto.builder()
+				.userId(entity.getUserId())
+				.name(entity.getName())
+				.id(entity.getId())
+				.currentStatus(entity.getCurrentStatus())
+				.progressRange(entity.getProgressRange())
+				.updateType(entity.getUpdateType())
+				.createdAt(entity.getCreatedAt()).build();
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getProgressRange() {
-		return progressRange;
-	}
-
-	public void setProgressRange(String progressRange) {
-		this.progressRange = progressRange;
-	}
-
-	public String getUpdateType() {
-		return updateType;
-	}
-
-	public void setUpdateType(String updateType) {
-		this.updateType = updateType;
-	}
-
-	public String getCurrentStatus() {
-		return currentStatus;
-	}
-
-	public void setCurrentStatus(String currentStatus) {
-		this.currentStatus = currentStatus;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
 }

@@ -8,7 +8,7 @@ import com.goaltracke.gtprocessservice.service.HealthService;
 @RestController
 public class HealthApiController {
 
-	private HealthService healthService;
+	private final HealthService healthService;
 
 	public HealthApiController(HealthService healthService) {
 		this.healthService = healthService;
