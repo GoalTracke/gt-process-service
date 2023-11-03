@@ -1,107 +1,66 @@
 package com.goaltracke.gtprocessservice.dto;
 
-import java.util.Date;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.goaltracke.gtprocessservice.entity.Goal;
+import com.goaltracke.gtprocessservice.entity.GoalStatus;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.util.CollectionUtils;
 
-public class GoalDto {
-
-	private String id;
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class GoalDto extends BaseDto {
 
 	private String name;
 
 	@JsonProperty("user_id")
 	private String userId;
 
-	@JsonProperty("progress_range")
-	private String progressRange;
+	@JsonProperty("target_position")
+	private String targetPosition;
 
-	@JsonProperty("update_type")
-	private String updateType;
+	@JsonProperty("start_position")
+	private String startPosition;
 
-	@JsonProperty("current_status")
-	private String currentStatus;
+	@JsonProperty("checkpoint_habit")
+	private String checkpointHabit;
 
-	@JsonProperty("created_at")
-	private Date createdAt;
+	@JsonProperty("goal_status")
+	private List<GoalStatusDto> goalStatusDtoList;
 
 	public Goal toEntity() {
 		Goal entity = new Goal();
 		entity.setName(name);
-		entity.setCurrentStatus(currentStatus);
-		entity.setProgressRange(progressRange);
-		entity.setUpdateType(updateType);
 		entity.setUserId(userId);
+		entity.setCheckpointHabit(checkpointHabit);
+		entity.setStartPosition(startPosition);
+		entity.setTargetPosition(targetPosition);
+		if (!CollectionUtils.isEmpty(goalStatusDtoList)) {
+			entity.setGoalStatus(goalStatusDtoList.stream().map(GoalStatusDto::toEntity).toList());
+		}
 		return entity;
 	}
 
 	public static GoalDto fromEntity(Goal entity) {
-		GoalDto dto = new GoalDto();
-		dto.setUserId(entity.getUserId());
-		dto.setName(entity.getName());
-		dto.setId(entity.getId());
-		dto.setCreatedAt(entity.getCreatedAt());
-		dto.setCurrentStatus(entity.getCurrentStatus());
-		dto.setProgressRange(entity.getProgressRange());
-		dto.setUpdateType(entity.getUpdateType());
-		return dto;
+		return GoalDto.builder()
+				.id(entity.getId())
+				.userId(entity.getUserId())
+				.name(entity.getName())
+				.checkpointHabit(entity.getCheckpointHabit())
+				.startPosition(entity.getStartPosition())
+				.targetPosition(entity.getTargetPosition())
+				.goalStatusDtoList(Objects.nonNull(entity.getGoalStatus()) ?entity.getGoalStatus().stream()
+						.map(GoalStatusDto::fromEntity)
+						.toList() : null)
+				.createdAt(entity.getCreatedAt())
+				.build();
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getProgressRange() {
-		return progressRange;
-	}
-
-	public void setProgressRange(String progressRange) {
-		this.progressRange = progressRange;
-	}
-
-	public String getUpdateType() {
-		return updateType;
-	}
-
-	public void setUpdateType(String updateType) {
-		this.updateType = updateType;
-	}
-
-	public String getCurrentStatus() {
-		return currentStatus;
-	}
-
-	public void setCurrentStatus(String currentStatus) {
-		this.currentStatus = currentStatus;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
 }

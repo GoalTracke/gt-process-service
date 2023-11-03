@@ -6,8 +6,8 @@ import com.goaltracke.gtprocessservice.dto.GoalDto;
 
 public interface GoalService {
 
-	public List<GoalDto> getGoals();
+	List<GoalDto> getGoals();
 
-	public GoalDto createGoal(GoalDto goal);
+	GoalDto createGoal(GoalDto goal);
 
 }

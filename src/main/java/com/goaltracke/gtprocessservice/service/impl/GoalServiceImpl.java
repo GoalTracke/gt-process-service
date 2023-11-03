@@ -13,7 +13,7 @@ import com.goaltracke.gtprocessservice.service.GoalService;
 @Service
 public class GoalServiceImpl implements GoalService {
 
-	private GoalRepository goalRepository;
+	private final GoalRepository goalRepository;
 
 	public GoalServiceImpl(GoalRepository goalRepository) {
 		this.goalRepository = goalRepository;
@@ -23,9 +23,7 @@ public class GoalServiceImpl implements GoalService {
 	public List<GoalDto> getGoals() {
 		List<Goal> goals = goalRepository.findAll();
 
-		List<GoalDto> goalDtos = goals.stream().map(goal -> GoalDto.fromEntity(goal)).collect(Collectors.toList());
-
-		return goalDtos;
+		return goals.stream().map(GoalDto::fromEntity).collect(Collectors.toList());
 	}
 
 	@Override

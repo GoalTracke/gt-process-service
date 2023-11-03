@@ -15,7 +15,7 @@ import com.goaltracke.gtprocessservice.service.GoalService;
 @RequestMapping("/goals")
 public class GoalApiController {
 
-	private GoalService goalService;
+	private final GoalService goalService;
 
 	public GoalApiController(GoalService goalService) {
 		this.goalService = goalService;
