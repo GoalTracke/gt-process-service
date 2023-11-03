@@ -1,57 +1,66 @@
 package com.goaltracke.gtprocessservice.dto;
 
-import java.util.Date;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.goaltracke.gtprocessservice.entity.Goal;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.goaltracke.gtprocessservice.entity.GoalStatus;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.util.CollectionUtils;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoalDto {
-
-	private String id;
+@EqualsAndHashCode(callSuper = true)
+public class GoalDto extends BaseDto {
 
 	private String name;
 
 	@JsonProperty("user_id")
 	private String userId;
 
-	@JsonProperty("progress_range")
-	private String progressRange;
+	@JsonProperty("target_position")
+	private String targetPosition;
 
-	@JsonProperty("update_type")
-	private String updateType;
+	@JsonProperty("start_position")
+	private String startPosition;
 
-	@JsonProperty("current_status")
-	private String currentStatus;
+	@JsonProperty("checkpoint_habit")
+	private String checkpointHabit;
 
-	@JsonProperty("created_at")
-	private Date createdAt;
+	@JsonProperty("goal_status")
+	private List<GoalStatusDto> goalStatusDtoList;
 
 	public Goal toEntity() {
 		Goal entity = new Goal();
 		entity.setName(name);
-		entity.setCurrentStatus(currentStatus);
-		entity.setProgressRange(progressRange);
-		entity.setUpdateType(updateType);
 		entity.setUserId(userId);
+		entity.setCheckpointHabit(checkpointHabit);
+		entity.setStartPosition(startPosition);
+		entity.setTargetPosition(targetPosition);
+		if (!CollectionUtils.isEmpty(goalStatusDtoList)) {
+			entity.setGoalStatus(goalStatusDtoList.stream().map(GoalStatusDto::toEntity).toList());
+		}
 		return entity;
 	}
 
 	public static GoalDto fromEntity(Goal entity) {
 		return GoalDto.builder()
+				.id(entity.getId())
 				.userId(entity.getUserId())
 				.name(entity.getName())
-				.id(entity.getId())
-				.currentStatus(entity.getCurrentStatus())
-				.progressRange(entity.getProgressRange())
-				.updateType(entity.getUpdateType())
-				.createdAt(entity.getCreatedAt()).build();
+				.checkpointHabit(entity.getCheckpointHabit())
+				.startPosition(entity.getStartPosition())
+				.targetPosition(entity.getTargetPosition())
+				.goalStatusDtoList(Objects.nonNull(entity.getGoalStatus()) ?entity.getGoalStatus().stream()
+						.map(GoalStatusDto::fromEntity)
+						.toList() : null)
+				.createdAt(entity.getCreatedAt())
+				.build();
 	}
 }
